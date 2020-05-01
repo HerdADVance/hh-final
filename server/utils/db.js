@@ -30,4 +30,4 @@ async function connect() {
 	connection.isConnected = db.connections[0].readyState
 }
 
-export default connectDb
+export default connect
