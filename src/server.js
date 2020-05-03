@@ -5,8 +5,8 @@ import config from './config'
 import cors from 'cors'
 //import { signup, signin, protect } from './utils/auth'
 import connect  from './utils/db'
-// import userRouter from './routers/user.router'
-// import gameRouter from './routers/game.router'
+import signupRouter from './routers/signup'
+import signup from './controllers/signup'
 
 export const app = express()
 
@@ -17,26 +17,22 @@ app.use(json())
 app.use(urlencoded({ extended: true }))
 app.use(morgan('dev'))
 
-// app.post('/signup', signup)
+app.post('/signup', signup)
 // app.post('/signin', signin)
 
-export const home = (req, res) => {
-  res.status(200).send("Hey there")
-}
-app.get('/', home)
 
-// app.use('/api', protect)
+// app.use('/signup', signupRouter)
 // app.use('/api/user', userRouter)
 // app.use('/api/item', itemRouter)
 // app.use('/api/list', listRouter)
 
 export const start = async () => {
-  try {
-    await connect()
-    app.listen(config.port, () => {
-      console.log(`REST API on http://localhost:${config.port}`)
-    })
-  } catch (e) {
-    console.error(e)
-  }
+	try {
+		await connect()
+		app.listen(config.port, () => {
+		  console.log(`REST API on http://localhost:${config.port}`)
+		})
+	} catch (e) {
+		console.error(e)
+	}
 }
