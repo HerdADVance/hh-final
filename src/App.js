@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
-import { Router } from "@reach/router";
-import { Link } from "@reach/router";
+import { Router, Link } from "@reach/router";
 import axios from 'axios'
 
 import Signup from './components/Signup'
+import Login from './components/Login'
 
 const App = () => {
 
@@ -22,7 +22,10 @@ const App = () => {
     return (
     <div>
         <h1>Huntington Hold'em</h1>
-        <Signup/>
+        <Router>
+            <Signup path="/signup" />
+            <Login path="/login" />
+        </Router>
     </div>
     )
 

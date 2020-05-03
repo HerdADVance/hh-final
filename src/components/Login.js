@@ -4,21 +4,17 @@ import { Button, Form, Icon, Message, Segment } from 'semantic-ui-react'
 import { Link } from "@reach/router";
 import axios from 'axios'
 
-
 import baseUrl from './../utils/baseUrl'
 
 const INITIAL_USER = {
-    email: '',
-    username: '',
+    login: '',
     password: ''
 }
 
-const Signup = () => {
+const Login = () => {
 
     const [user, setUser] = React.useState(INITIAL_USER)
     const [disabled, setDisabled] = React.useState(true)
-    const [loading, setLoading] = React.useState(false)
-    const [error, setError] = React.useState('')
 
     React.useEffect(() => {
         const isUser = Object.values(user).every(el => Boolean(el))
@@ -33,48 +29,30 @@ const Signup = () => {
 
     async function handleSubmit(){
         try{
-            setLoading(true)
-            setError('')
             const url = `${baseUrl}/signup`
             const payload = { ...user }
             const response = await axios.post(url, payload)
             console.log(response.data)
         } catch (error) {
-            setError(error.response.data)
-            console.log(error.response.data)
+            console.log(error)
         } finally {
-            setLoading(false)
+            console.log("done")
         }
     }
 
 
     // JSX 
     return (
-    <Form onSubmit={handleSubmit} error={Boolean(error)} loading={loading}>
-        <Message
-            error
-            header="Oops!"
-            content={error}
-        />
+    <Form onSubmit={handleSubmit}>
         <Segment>
             <Form.Input
                 fluid
                 icon="envelope"
                 iconPosition="left"
-                label="E-Mail"
-                placeholder="E-Mail"
-                name="email"
-                value={user.email}
-                onChange={handleChange}
-            />
-            <Form.Input
-                fluid
-                icon="user"
-                iconPosition="left"
-                label="Username"
-                placeholder="Username"
-                name="username"
-                value={user.username}
+                label="Login with E-Mail or Username"
+                placeholder="E-Mail or Username"
+                name="login"
+                value={user.login}
                 onChange={handleChange}
             />
             <Form.Input
@@ -95,11 +73,11 @@ const Signup = () => {
                 color="purple"
                 content="Let's Play!"
             />
-            <Link to="/login">Login</Link>
+            <Link to="/signup">Signup</Link>
         </Segment>
     </Form>
     )
 
 };
 
-export default Signup
+export default Login
