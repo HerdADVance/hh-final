@@ -2,33 +2,40 @@ import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { Router, Link } from "@reach/router";
 import axios from 'axios'
+import cookie from 'js-cookie'
+import baseUrl from './utils/baseUrl'
 
-import Signup from './components/Signup'
-import Login from './components/Login'
+import Layout from './components/Layout'
 
-const App = () => {
 
-    const [message, setMessage] = useState('Click above to get started')
-  
-    // FUNCTIONS
-    async function handleButtonClick(){
-        const response = await axios.get('http://localhost:3000/')
-        console.log(response.data)
-        setMessage(response.data)
+class App extends React.Component {
+
+    constructor(props){
+        super(props);
+        this.state = {
+            me: {}
+        }
     }
 
+    async componentDidMount(){
+        console.log("mounting")
+        const token = cookie.get('hh-token')
+        const payload = { headers: { Authorization: token } }
+        const url = `${baseUrl}/user`
+        const response = await axios.get(url, payload)
+        const user = response.data
+        this.setState({me: user})
+    }
 
+  
     // JSX 
-    return (
-    <div>
-        <h1>Huntington Hold'em</h1>
-        <Router>
-            <Signup path="/signup" />
-            <Login path="/login" />
-        </Router>
-    </div>
-    )
+    render(){
+        return (
+            <Layout me={this.state.me} />
+        )
+    }
 
 };
+
 
 ReactDOM.render(<App />, document.getElementById("root"));

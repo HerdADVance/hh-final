@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { Button, Form, Icon, Message, Segment } from 'semantic-ui-react'
 import { Link } from "@reach/router";
+import { handleLogin } from '../utils/auth'
 import axios from 'axios'
 
 
@@ -38,7 +39,7 @@ const Signup = () => {
             const url = `${baseUrl}/signup`
             const payload = { ...user }
             const response = await axios.post(url, payload)
-            console.log(response.data)
+            handleLogin(response.data)
         } catch (error) {
             setError(error.response.data)
             console.log(error.response.data)

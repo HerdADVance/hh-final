@@ -5,8 +5,9 @@ import config from './config'
 import cors from 'cors'
 //import { signup, signin, protect } from './utils/auth'
 import connect  from './utils/db'
-import signupRouter from './routers/signup'
+//import signupRouter from './routers/signup'
 import signup from './controllers/signup'
+import user from './controllers/user'
 
 export const app = express()
 
@@ -18,6 +19,7 @@ app.use(urlencoded({ extended: true }))
 app.use(morgan('dev'))
 
 app.post('/signup', signup)
+app.get('/user', user)
 // app.post('/signin', signin)
 
 
