@@ -50,54 +50,56 @@ const Signup = () => {
 
     // JSX 
     return (
-    <Form onSubmit={handleSubmit} error={Boolean(error)} loading={loading}>
-        <Message
-            error
-            header="Oops!"
-            content={error}
-        />
-        <Segment>
-            <Form.Input
-                fluid
-                icon="envelope"
-                iconPosition="left"
-                label="E-Mail"
-                placeholder="E-Mail"
-                name="email"
-                value={user.email}
-                onChange={handleChange}
+    <div className="auth">
+        <Form onSubmit={handleSubmit} error={Boolean(error)} loading={loading}>
+            <Message
+                error
+                header="Oops!"
+                content={error}
             />
-            <Form.Input
-                fluid
-                icon="user"
-                iconPosition="left"
-                label="Username"
-                placeholder="Username"
-                name="username"
-                value={user.username}
-                onChange={handleChange}
-            />
-            <Form.Input
-                fluid
-                icon="lock"
-                iconPosition="left"
-                label="Password"
-                placeholder="Password"
-                name="password"
-                type="password"
-                value={user.password}
-                onChange={handleChange}
-            />
-            <Button
-                disabled={disabled}
-                icon="signup"
-                type="submit"
-                color="purple"
-                content="Let's Play!"
-            />
-            <Link to="/login">Login</Link>
-        </Segment>
-    </Form>
+            <Segment>
+                <Form.Input
+                    fluid
+                    icon="envelope"
+                    iconPosition="left"
+                    label="E-Mail"
+                    placeholder="E-Mail"
+                    name="email"
+                    value={user.email}
+                    onChange={handleChange}
+                />
+                <Form.Input
+                    fluid
+                    icon="user"
+                    iconPosition="left"
+                    label="Username"
+                    placeholder="Username"
+                    name="username"
+                    value={user.username}
+                    onChange={handleChange}
+                />
+                <Form.Input
+                    fluid
+                    icon="lock"
+                    iconPosition="left"
+                    label="Password"
+                    placeholder="Password"
+                    name="password"
+                    type="password"
+                    value={user.password}
+                    onChange={handleChange}
+                />
+                <Button
+                    disabled={disabled}
+                    icon="signup"
+                    type="submit"
+                    color="purple"
+                    content="Let's Play!"
+                />
+                <Link to="/login">Login</Link>
+            </Segment>
+        </Form>
+    </div>
     )
 
 };

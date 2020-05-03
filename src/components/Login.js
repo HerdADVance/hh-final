@@ -43,39 +43,41 @@ const Login = () => {
 
     // JSX 
     return (
+    <div className="auth">
     <Form onSubmit={handleSubmit}>
-        <Segment>
-            <Form.Input
-                fluid
-                icon="envelope"
-                iconPosition="left"
-                label="Login with E-Mail or Username"
-                placeholder="E-Mail or Username"
-                name="login"
-                value={user.login}
-                onChange={handleChange}
-            />
-            <Form.Input
-                fluid
-                icon="lock"
-                iconPosition="left"
-                label="Password"
-                placeholder="Password"
-                name="password"
-                type="password"
-                value={user.password}
-                onChange={handleChange}
-            />
-            <Button
-                disabled={disabled}
-                icon="signup"
-                type="submit"
-                color="purple"
-                content="Let's Play!"
-            />
-            <Link to="/signup">Signup</Link>
-        </Segment>
-    </Form>
+            <Segment>
+                <Form.Input
+                    fluid
+                    icon="envelope"
+                    iconPosition="left"
+                    label="Login with E-Mail or Username"
+                    placeholder="E-Mail or Username"
+                    name="login"
+                    value={user.login}
+                    onChange={handleChange}
+                />
+                <Form.Input
+                    fluid
+                    icon="lock"
+                    iconPosition="left"
+                    label="Password"
+                    placeholder="Password"
+                    name="password"
+                    type="password"
+                    value={user.password}
+                    onChange={handleChange}
+                />
+                <Button
+                    disabled={disabled}
+                    icon="signup"
+                    type="submit"
+                    color="purple"
+                    content="Let's Play!"
+                />
+                <Link to="/signup">Signup</Link>
+            </Segment>
+        </Form>
+    </div>
     )
 
 };
