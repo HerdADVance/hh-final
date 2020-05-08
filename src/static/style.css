@@ -1,0 +1,51 @@
+
+.wrap{
+	padding-left: 10%;
+	padding-right: 10%;
+}
+
+.header{
+	border-bottom: 1px solid #CCC;
+	height: 40px;
+}
+
+.logo{
+	display: block;
+	float: left;
+	font-size: 24px;
+	line-height: 40px;
+}
+
+.header nav{
+	float: left;
+	margin-left: 30px;
+}
+
+nav li{
+	float: left;
+	height: 40px;
+	line-height: 40px;
+	list-style: none
+}
+
+nav li a{
+	color: mediumseagreen;
+	display: block;
+	font-weight: bold;
+	height: 100%;
+	padding: 0 1em;
+}
+
+.header span{
+	color: black;
+	cursor: pointer;
+	display: block;
+	float: right;
+	line-height: 40px;
+}
+
+.auth{
+	margin-left: calc(50% - 200px);
+	margin-top: 150px;
+	width: 400px
+}

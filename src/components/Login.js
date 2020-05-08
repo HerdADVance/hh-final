@@ -2,9 +2,12 @@ import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { Button, Form, Icon, Message, Segment } from 'semantic-ui-react'
 import { Link } from "@reach/router";
+import { handleLogin } from '../utils/auth'
 import axios from 'axios'
-
+import Me from '../contexts/Me'
 import baseUrl from './../utils/baseUrl'
+import { AuthContext } from "../App";
+
 
 const INITIAL_USER = {
     login: '',
@@ -13,8 +16,12 @@ const INITIAL_USER = {
 
 const Login = () => {
 
+    const { dispatch } = React.useContext(AuthContext);
+
     const [user, setUser] = React.useState(INITIAL_USER)
     const [disabled, setDisabled] = React.useState(true)
+    const [loading, setLoading] = React.useState(false)
+    const [error, setError] = React.useState('')
 
     React.useEffect(() => {
         const isUser = Object.values(user).every(el => Boolean(el))
@@ -29,22 +36,36 @@ const Login = () => {
 
     async function handleSubmit(){
         try{
-            const url = `${baseUrl}/signup`
+            setLoading(true)
+            setError('')
+            const url = `${baseUrl}/login`
             const payload = { ...user }
             const response = await axios.post(url, payload)
-            console.log(response.data)
+            dispatch({
+                type: "LOGIN",
+                payload: {
+                    user: response.data.user,
+                    token: response.data.token
+                }
+            })
         } catch (error) {
-            console.log(error)
+            setError(error.response.data)
         } finally {
-            console.log("done")
+            setLoading(false)
         }
     }
 
 
+        
     // JSX 
     return (
     <div className="auth">
-    <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit} error={Boolean(error)} loading={loading}>
+            <Message
+                error
+                header="Oops!"
+                content={error}
+            />
             <Segment>
                 <Form.Input
                     fluid
@@ -72,7 +93,7 @@ const Login = () => {
                     icon="signup"
                     type="submit"
                     color="purple"
-                    content="Let's Play!"
+                    content="Login"
                 />
                 <Link to="/signup">Signup</Link>
             </Segment>

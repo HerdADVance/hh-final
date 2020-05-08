@@ -7,6 +7,7 @@ import cors from 'cors'
 import connect  from './utils/db'
 //import signupRouter from './routers/signup'
 import signup from './controllers/signup'
+import login from './controllers/login'
 import user from './controllers/user'
 
 export const app = express()
@@ -19,7 +20,8 @@ app.use(urlencoded({ extended: true }))
 app.use(morgan('dev'))
 
 app.post('/signup', signup)
-app.get('/user', user)
+app.post('/login', login)
+app.get('/api/user', user)
 // app.post('/signin', signin)
 
 

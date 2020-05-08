@@ -42,7 +42,6 @@ const Signup = () => {
             handleLogin(response.data)
         } catch (error) {
             setError(error.response.data)
-            console.log(error.response.data)
         } finally {
             setLoading(false)
         }

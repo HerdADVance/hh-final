@@ -3,21 +3,21 @@ import ReactDOM from "react-dom";
 import { Router, Link } from "@reach/router";
 import axios from 'axios'
 
+import Header from './Header'
 import Signup from './Signup'
 import Login from './Login'
 
-const Layout = ({ me }) => {
+const Layout = () => {
   
     // JSX 
     return (
-    <div>
-        <h1>Huntington Hold'em</h1>
-        <h2>{me? me.username : 'no user'}</h2>
+    <>
+        <Header/>
         <Router>
             <Signup path="/signup" />
             <Login path="/login" />
         </Router>
-    </div>
+    </>
     )
 
 };
