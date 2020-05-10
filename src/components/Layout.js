@@ -6,6 +6,7 @@ import axios from 'axios'
 import Header from './Header'
 import Signup from './Signup'
 import Login from './Login'
+import Dashboard from './Dashboard'
 
 const Layout = () => {
   
@@ -16,6 +17,7 @@ const Layout = () => {
         <Router>
             <Signup path="/signup" />
             <Login path="/login" />
+            <Dashboard path="/"/>
         </Router>
     </>
     )

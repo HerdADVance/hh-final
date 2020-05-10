@@ -4,8 +4,7 @@ import { Button, Form, Icon, Message, Segment } from 'semantic-ui-react'
 import { Link } from "@reach/router";
 import { handleLogin } from '../utils/auth'
 import axios from 'axios'
-
-
+import { AuthContext } from "../App";
 import baseUrl from './../utils/baseUrl'
 
 const INITIAL_USER = {
@@ -15,6 +14,8 @@ const INITIAL_USER = {
 }
 
 const Signup = () => {
+
+    const { dispatch } = React.useContext(AuthContext);
 
     const [user, setUser] = React.useState(INITIAL_USER)
     const [disabled, setDisabled] = React.useState(true)
@@ -39,7 +40,13 @@ const Signup = () => {
             const url = `${baseUrl}/signup`
             const payload = { ...user }
             const response = await axios.post(url, payload)
-            handleLogin(response.data)
+            dispatch({
+                type: "LOGIN",
+                payload: {
+                    user: response.data.user,
+                    token: response.data.token
+                }
+            })
         } catch (error) {
             setError(error.response.data)
         } finally {

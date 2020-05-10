@@ -43,7 +43,7 @@ export default async(req, res) => {
 		const token = jwt.sign({ userId: newUser._id }, options.secrets.jwt, { expiresIn: '30d' })
 
 		// Send back token
-		res.status(201).json(token)
+		res.status(201).json({user: newUser, token: token})
 
 
 	} catch (error) {

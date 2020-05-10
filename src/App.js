@@ -5,7 +5,6 @@ import axios from 'axios'
 import cookie from 'js-cookie'
 import baseUrl from './utils/baseUrl'
 
-import Me from './contexts/Me'
 import Layout from './components/Layout'
 
 export const AuthContext = React.createContext();

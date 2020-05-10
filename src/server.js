@@ -9,6 +9,8 @@ import connect  from './utils/db'
 import signup from './controllers/signup'
 import login from './controllers/login'
 import user from './controllers/user'
+import dashboard from './controllers/dashboard'
+import playRandomOpponent from './controllers/playRandomOpponent'
 
 export const app = express()
 
@@ -22,7 +24,8 @@ app.use(morgan('dev'))
 app.post('/signup', signup)
 app.post('/login', login)
 app.get('/api/user', user)
-// app.post('/signin', signin)
+app.get('/api/dashboard', dashboard)
+app.get('/api/playRandomOpponent', playRandomOpponent)
 
 
 // app.use('/signup', signupRouter)

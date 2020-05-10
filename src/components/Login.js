@@ -4,7 +4,6 @@ import { Button, Form, Icon, Message, Segment } from 'semantic-ui-react'
 import { Link } from "@reach/router";
 import { handleLogin } from '../utils/auth'
 import axios from 'axios'
-import Me from '../contexts/Me'
 import baseUrl from './../utils/baseUrl'
 import { AuthContext } from "../App";
 
