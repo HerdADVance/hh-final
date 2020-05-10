@@ -1,8 +1,9 @@
 import mongoose from 'mongoose'
+const { Number, ObjectId } = mongoose.Schema.Types
 
 const playerSchema = new mongoose.Schema({
 	user: {
-		type: Number,
+		type: ObjectId,
 		ref: "User"
 	},
 	cards: [

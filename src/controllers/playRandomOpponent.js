@@ -1,9 +1,12 @@
 import { User } from '../models/User'
 import { Waitlist } from '../models/Waitlist'
 import { Game } from '../models/Game'
+import { Player } from '../models/Player'
 import jwt from 'jsonwebtoken'
 import connect from '../utils/db'
 import options from '../config'
+import DECK from '../utils/deck'
+import shuffle from 'lodash/shuffle'
 
 connect()
 
@@ -32,10 +35,38 @@ export default async (req, res) => {
 
 			// Start new game if other user on waitlist
 			if(waitlist.users[0]){
+
+				// Create and shuffle deck for new game then pass out cards to players and boards
+				const deck = shuffle(DECK)
+				const playerCards = [ deck[0], deck[2], deck[4], deck[6], deck[8], deck[10], deck[12], deck[14], deck[16], deck[18] ]
+				const opponentCards = [ deck[1], deck[3], deck[5], deck[7], deck[9], deck[11], deck[13], deck[15], deck[17], deck[19] ]
+				const board1 = [ deck[20], deck[21], deck[22], deck[23], deck[24] ]
+				const board2 = [ deck[25], deck[26], deck[27], deck[28], deck[29] ]
+				const board3 = [ deck[30], deck[31], deck[32], deck[33], deck[34] ]
+				const board4 = [ deck[35], deck[36], deck[37], deck[38], deck[39] ]
+				const board5 = [ deck[40], deck[41], deck[42], deck[43], deck[44] ]
 				
-				const newGame = await new Game({
-					players: [userId, waitlist.users[0]]
+				// Create new players for game
+				const newPlayer = await new Player({
+					user: userId,
+					cards: playerCards
 				}).save()
+				const newOpponent = await new Player({
+					user: waitlist.users[0],
+					cards: opponentCards
+				}).save()
+
+				// Creating the game
+				const newGame = await new Game({
+					players: [newPlayer._id, newOpponent._id],
+					board1,
+					board2,
+					board3,
+					board4,
+					board5
+				}).save()
+
+				// Remove opponent from waitlist
 
 				res.status(200).json({
 					canRequestGame: true,

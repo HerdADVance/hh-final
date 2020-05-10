@@ -1,4 +1,6 @@
 import { User } from '../models/User'
+import { Game } from '../models/Game'
+import { Player } from '../models/Player'
 import { Waitlist } from '../models/Waitlist'
 import jwt from 'jsonwebtoken'
 import connect from '../utils/db'
@@ -34,6 +36,16 @@ export default async (req, res) => {
 				title: 'Standard Games'
 			}).save()
 		}
+
+		const userPlayers = await Player.find({
+    		user: userId
+		})
+
+		const userGames = await Game.find({
+			players: { "$in" : userPlayers }
+		}).populate({ path: "players", model: Player })
+
+		console.log(userGames[0])
 
 		res.status(200).json({
 			canRequestGame,
