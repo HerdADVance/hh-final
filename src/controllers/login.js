@@ -21,8 +21,7 @@ export default async(req, res) => {
 		} else {
 			user = await User.findOne({ username: login }).select('+password')
 		}
-
-		console.log(user)
+		
 
 		// Return error if user doesn't exist
 		if(!user) return res.status(404).send("No user exists with that username or e-mail")

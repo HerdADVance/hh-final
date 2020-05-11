@@ -7,6 +7,7 @@ import Header from './Header'
 import Signup from './Signup'
 import Login from './Login'
 import Dashboard from './Dashboard'
+import Game from './Game'
 
 const Layout = () => {
   
@@ -18,6 +19,7 @@ const Layout = () => {
             <Signup path="/signup" />
             <Login path="/login" />
             <Dashboard path="/"/>
+            <Game path="/game/:id"/>
         </Router>
     </>
     )
