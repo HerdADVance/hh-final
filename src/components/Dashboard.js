@@ -13,6 +13,7 @@ const Dashboard = () => {
     const token = cookie.get('hh-token')
 
     const [canRequestGame, setCanRequestGame] = React.useState(true)
+    const [openGames, setOpenGames] = React.useState([])
 
     React.useEffect(() => {
 
@@ -21,7 +22,9 @@ const Dashboard = () => {
                 const url = `${baseUrl}/api/dashboard`
                 const payload = { headers: { Authorization: token } }
                 const response = await axios.get(url, payload)
-                setCanRequestGame(response.data.canRequestGame) 
+                setCanRequestGame(response.data.canRequestGame)
+                console.log(response.data.openGames) 
+                setOpenGames(response.data.openGames)
 
             } catch(error) {
                 console.error(error)
@@ -59,6 +62,21 @@ const Dashboard = () => {
                 <p>Waiting on opponent. New game will start soon.</p>
             }
             <h2>Current Games</h2>
+            <table>
+                <thead><tr>
+                    <th>Opponent</th>
+                    <th>Score</th>
+                    <th>Round</th>
+                </tr></thead><tbody>
+                {openGames.map((game) => (
+                    <tr key={game.id}>
+                        <td><Link to={"game/" + game.id}>{game.opponentUsername}</Link></td>
+                        <td>{game.userScore} - {game.opponentScore}</td>
+                        <td>{game.round}</td>
+                    </tr>
+                ))}
+            </tbody></table>
+
             <h2>Completed Games</h2>
         </>
         :

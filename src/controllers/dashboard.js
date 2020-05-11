@@ -5,6 +5,7 @@ import { Waitlist } from '../models/Waitlist'
 import jwt from 'jsonwebtoken'
 import connect from '../utils/db'
 import options from '../config'
+import find from 'lodash/find'
 
 connect()
 
@@ -37,39 +38,50 @@ export default async (req, res) => {
 			}).save()
 		}
 
+		// Find player's games with players and users
 		const userPlayers = await Player.find({
     		user: userId
 		})
-
 		const userGames = await Game.find({
 			players: { "$in" : userPlayers }
-		}).populate({ path: "players", model: Player })
+		})
+		.populate({ 
+			path: "players", 
+			model: Player,
+			populate: {
+				path: "user", 
+				model: User
+			} 
+		})
 
-		console.log(userGames[0])
 
+		// Sort through player's games and format needed data to send to client
+		userGames.forEach(function(game) {
+			let g = {}
+			let user
+			let opponent
+
+			game.players.forEach(function(player){
+				if(player.user._id == userId) user = player
+					else opponent = player
+			})
+
+			g.id = game._id
+			g.round = game.round
+			g.userScore = user.score
+			g.opponentScore = opponent.score
+			g.opponentUsername = opponent.user.username
+			openGames.push(g)
+		})
+
+
+		// Send all data to dashboard
 		res.status(200).json({
 			canRequestGame,
 			openGames,
 			completedGames
 		})
 
-		// Create new waitlist if none exist and add userId to its Users
-		// if(!waitlist){
-		// 	const newWaitlist = await new Waitlist({
-		// 		title: 'Standard Games',
-		// 		users: [userId]
-		// 	}).save()
-		// } else {
-		// 	console.log(waitlist.users)
-		// }
-
-		
-		
-		// if(user) {
-		// 	res.status(200).json(user)
-		// } else {
-		// 	res.status(404).send("User not found")
-		// }
 
 
 	} catch (error) {
