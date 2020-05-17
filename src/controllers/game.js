@@ -12,85 +12,85 @@ export default async (req, res) => {
 	
 	console.log("game controller")
 
-	if (!("authorization" in req.headers)) {
-		return res.status(401).send("No authorization found")
+	let userPlayer = false
+	if (("authorization" in req.headers)) {
+		const { userId } = jwt.verify(req.headers.authorization, options.secrets.jwt)
+		if( userId ) userPlayer = userId
 	}
 
 	try {
 
-		// let canRequestGame = true
-		// let openGames = []
-		// let completedGames = []
-
+		// Find and populate the game
 		const gameId = req.params.id
-
 		const game = await Game.findOne({
 			_id: gameId
 		})
+		.populate({ 
+			path: "players", 
+			model: Player,
+			populate: {
+				path: "user", 
+				model: User
+			} 
+		})
 
-		// const { userId } = jwt.verify(req.headers.authorization, options.secrets.jwt)
+		// Default info about game we're going to return 
+		let gameInfo = {
+			userinGame: false,
+			board1: false,
+			board2: false,
+			board3: false,
+			board4: false,
+			board5: false,
+			round: game.round,
+			players: [],
+		}
 
-		// // See if existing Standard Games waitlist exists
-		// const waitlist = await Waitlist.findOne({ title: 'Standard Games' });
+		// Return only current or previous boards
+		for(var i = 1; i <= game.round; i++){
+			gameInfo[`board${i}`] = game[`board${i}`]
+		}
 
-		// // If waitlist exists see if user is already on it, if not, create it(would only apply to first user to ever visit dashboard) 
-		// if( waitlist ){
-		// 	const userOnWaitlist = waitlist.users.some(function (user) {
-		// 		return user.equals(userId)
-		// 	})
-		// 	if(userOnWaitlist) canRequestGame = false
-		// } else{
-		// 	const newWaitlist = await new Waitlist({
-		// 		title: 'Standard Games'
-		// 	}).save()
-		// }
+		// Return info about each player 
+		game.players.forEach(function(player){
+			let playerInfo = {
+				userid: player.user._id,
+				username: player.user.username,
+				isUser: false,
+				cards: false,
+				hand1: false,
+				hand2: false,
+				hand3: false,
+				hand4: false,
+				hand5: false,
+				score: player.score
+			}
 
-		// // Find player's games with players and users
-		// const userPlayers = await Player.find({
-  //   		user: userId
-		// })
-		// const userGames = await Game.find({
-		// 	players: { "$in" : userPlayers }
-		// })
-		// .populate({ 
-		// 	path: "players", 
-		// 	model: Player,
-		// 	populate: {
-		// 		path: "user", 
-		// 		model: User
-		// 	} 
-		// })
+			// Return only previous hands
+			for(var i = 1; i < game.round; i++){
+				playerInfo[`hand${i}`] = player[`hand${i}`]
+			}
 
+			// Check to see if user is player and return their cards if so
+			if(player.user._id == userPlayer){
+				gameInfo.userinGame = true
+				playerInfo.isUser = true
+				playerInfo.cards = player.cards
+			}
 
-		// // Sort through player's games and format needed data to send to client
-		// userGames.forEach(function(game) {
-		// 	let g = {}
-		// 	let user
-		// 	let opponent
-
-		// 	game.players.forEach(function(player){
-		// 		if(player.user._id == userId) user = player
-		// 			else opponent = player
-		// 	})
-
-		// 	g.id = game._id
-		// 	g.round = game.round
-		// 	g.userScore = user.score
-		// 	g.opponentScore = opponent.score
-		// 	g.opponentUsername = opponent.user.username
-		// 	openGames.push(g)
-		// })
+			gameInfo.players.push(playerInfo)
+		})
 
 
-		// Send all data to dashboard
+		// Send game data
 		res.status(200).json({
-			game
+			gameInfo
 		})
 
 
 
 	} catch (error) {
 		console.log(error)
-		res.status(403).send("Invalid token")
+		res.status(403).send("Couldn't find game")
 	}
 }

@@ -5,22 +5,24 @@ import cookie from 'js-cookie'
 import baseUrl from './../utils/baseUrl'
 
 import { AuthContext } from "../App";
+import Player from './Player'
 
 const Game = () => {
 
 	const token = cookie.get('hh-token')
 
+	const [gameInfo, setGameInfo] = React.useState({})
+
 	React.useEffect(() => {
 
 	    async function getGameInfo() {
 	        try {
-	        	console.log("gameinfo")
 	            const url = `${baseUrl}/api/game/5eb871a7073e0cec69e31340`
 	            const payload = { 
 	            	headers: { Authorization: token } 
 	            }
 	            const response = await axios.get(url, payload)
-	            console.log(response.data.game)
+	            setGameInfo(response.data.gameInfo)
 
 	        } catch(error) {
 	            console.error(error)
@@ -34,8 +36,17 @@ const Game = () => {
   
     // JSX 
     return (
-    <div className="wrap">
+    <div className="wrap game">
         <h1>Game</h1>
+        <strong>Round {gameInfo.round}</strong>
+        {gameInfo.players?
+        	<>
+        	<Player player={gameInfo.players[0]} />
+        	<Player player={gameInfo.players[1]} />
+        	</>
+        :
+        	<p>Loading</p>
+    	}
     </div>
     )
 
