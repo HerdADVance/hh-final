@@ -49,3 +49,65 @@ nav li a{
 	margin-top: 150px;
 	width: 400px
 }
+
+.card{
+	background-repeat: no-repeat;
+	background-size: cover;
+	float: left;
+	height: 120px;
+	width: 80px;
+}
+
+.C1{background-image:url(../images/2C.png);}
+.C2{background-image:url(../images/3C.png);}
+.C3{background-image:url(../images/4C.png);}
+.C4{background-image:url(../images/5C.png);}
+.C5{background-image:url(../images/6C.png);}
+.C6{background-image:url(../images/7C.png);}
+.C7{background-image:url(../images/8C.png);}
+.C8{background-image:url(../images/9C.png);}
+.C9{background-image:url(../images/TC.png);}
+.C10{background-image:url(../images/JC.png);}
+.C11{background-image:url(../images/QC.png);}
+.C12{background-image:url(../images/KC.png);}
+.C13{background-image:url(../images/AC.png);}
+.C14{background-image:url(../images/2D.png);}
+.C15{background-image:url(../images/3D.png);}
+.C16{background-image:url(../images/4D.png);}
+.C17{background-image:url(../images/5D.png);}
+.C18{background-image:url(../images/6D.png);}
+.C19{background-image:url(../images/7D.png);}
+.C20{background-image:url(../images/8D.png);}
+.C21{background-image:url(../images/9D.png);}
+.C22{background-image:url(../images/TD.png);}
+.C23{background-image:url(../images/JD.png);}
+.C24{background-image:url(../images/QD.png);}
+.C25{background-image:url(../images/KD.png);}
+.C26{background-image:url(../images/AD.png);}
+.C27{background-image:url(../images/2H.png);}
+.C28{background-image:url(../images/3H.png);}
+.C29{background-image:url(../images/4H.png);}
+.C30{background-image:url(../images/5H.png);}
+.C31{background-image:url(../images/6H.png);}
+.C32{background-image:url(../images/7H.png);}
+.C33{background-image:url(../images/8H.png);}
+.C34{background-image:url(../images/9H.png);}
+.C35{background-image:url(../images/TH.png);}
+.C36{background-image:url(../images/JH.png);}
+.C37{background-image:url(../images/QH.png);}
+.C38{background-image:url(../images/KH.png);}
+.C39{background-image:url(../images/AH.png);}
+.C40{background-image:url(../images/2S.png);}
+.C41{background-image:url(../images/3S.png);}
+.C42{background-image:url(../images/4S.png);}
+.C43{background-image:url(../images/5S.png);}
+.C44{background-image:url(../images/6S.png);}
+.C45{background-image:url(../images/7S.png);}
+.C46{background-image:url(../images/8S.png);}
+.C47{background-image:url(../images/9S.png);}
+.C48{background-image:url(../images/TS.png);}
+.C49{background-image:url(../images/JS.png);}
+.C50{background-image:url(../images/QS.png);}
+.C51{background-image:url(../images/KS.png);}
+.C52{background-image:url(../images/AS.png);}
+

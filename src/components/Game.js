@@ -39,14 +39,22 @@ const Game = () => {
     <div className="wrap game">
         <h1>Game</h1>
         <strong>Round {gameInfo.round}</strong>
+        
         {gameInfo.players?
-        	<>
-        	<Player player={gameInfo.players[0]} />
-        	<Player player={gameInfo.players[1]} />
-        	</>
+        <>
+        	<Player 
+        		player={gameInfo.players[0]}
+        		round={gameInfo.round}
+        	/>
+        	<Player 
+        		player={gameInfo.players[1]} 
+        		round={gameInfo.round}
+        	/>
+        </>
         :
         	<p>Loading</p>
     	}
+
     </div>
     )
 

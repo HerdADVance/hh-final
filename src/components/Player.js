@@ -2,23 +2,31 @@ import React, { useState, useEffect } from "react";
 import { Router, Link, navigate } from "@reach/router";
 
 
-const Player = ({ player }) => {
+const Player = ({ player, round }) => {
+
+	const totalCards = 10 - ( (round - 1) * 2)
+
+	function createCards(n){
+	    var cards = [];
+	    for(var i =0; i < n; i++){
+	        cards.push(<img src="/images/back.png" width="80" />);
+	    }
+	    return cards;
+	}
   
     // JSX 
     return (
     <div className="player">
-        <h1>Player: {player.username}</h1>
+        <h1>{player.username} {player.score}</h1>
 
         {player.isUser?
         <>
         	{player.cards.map((card) => (
-                <div key={card}>
-                    <span>{card} </span>
-                </div>
+                <div className={`card C${card}`} key={card}></div>
             ))}
         </>
         :
-        	<p>Back of cards here</p>
+        	createCards(totalCards)
         }
 
     </div>
