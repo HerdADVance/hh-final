@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { Router, Link, navigate } from "@reach/router";
 
-const Card = ({ card, numCardsSelected, decrementCardsSelected, incrementCardsSelected }) => {
+//const Card = ({ card, numCardsSelected, decrementCardsSelected, incrementCardsSelected }) => {
+const Card = ({ card, cardsSelected, addCardToSelected, removeCardFromSelected }) => {
 
 	const [isSelected, setIsSelected] = React.useState('')
 
 
     // FUNCTIONS
-	function handleClick(){
+	function handleClick(card){
         if(isSelected === 'selected'){
             setIsSelected('')
-            decrementCardsSelected()
+            removeCardFromSelected(card)
         } else {
-            if(numCardsSelected < 2){
+            if(cardsSelected.length < 2){
                 setIsSelected('selected')
-                incrementCardsSelected()
+                addCardToSelected(card)
             }
         }
 	}
@@ -24,7 +25,7 @@ const Card = ({ card, numCardsSelected, decrementCardsSelected, incrementCardsSe
     return (
     <div 
         className={`card C${card} ${isSelected}`}
-        onClick={handleClick}
+        onClick={() => handleClick(card)}
     >
     </div>
     )

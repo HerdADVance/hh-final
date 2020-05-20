@@ -23,7 +23,6 @@ const Dashboard = () => {
                 const payload = { headers: { Authorization: token } }
                 const response = await axios.get(url, payload)
                 setCanRequestGame(response.data.canRequestGame)
-                console.log(response.data.openGames) 
                 setOpenGames(response.data.openGames)
 
             } catch(error) {

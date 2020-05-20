@@ -12,6 +12,7 @@ import user from './controllers/user'
 import dashboard from './controllers/dashboard'
 import playRandomOpponent from './controllers/playRandomOpponent'
 import game from './controllers/game'
+import playHand from './controllers/playHand'
 
 export const app = express()
 
@@ -28,6 +29,7 @@ app.get('/api/user', user)
 app.get('/api/dashboard', dashboard)
 app.get('/api/playRandomOpponent', playRandomOpponent)
 app.get('/api/game/:id', game)
+app.post('/api/game/:id/playHand', playHand)
 
 // app.use('/signup', signupRouter)
 // app.use('/api/user', userRouter)

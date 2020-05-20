@@ -3,11 +3,10 @@ import { Router, Link, navigate } from "@reach/router";
 
 import Card from './Card'
 
-const Player = ({ player, round }) => {
+const Player = ({ player, round, handlePlayHandClick }) => {
 
-	const [numCardsSelected, setNumCardsSelected] = React.useState(0)
 	const totalCards = 10 - ( (round - 1) * 2)
-
+	const [cardsSelected, setCardsSelected] = React.useState([])
 
 	// FUNCTIONS
 	function createCards(n){
@@ -18,18 +17,14 @@ const Player = ({ player, round }) => {
 	    return cards;
 	}
 
-	function decrementCardsSelected() {
-		setNumCardsSelected(numCardsSelected - 1)
+
+	function addCardToSelected(card) {
+		setCardsSelected([...cardsSelected, card])
 	}
 
-	function handlePlayClick() {
-		console.log('clicky')
+	function removeCardFromSelected(card) {
+		setCardsSelected(cardsSelected.filter(item => item !== card))
 	}
-
-	function incrementCardsSelected() {
-		setNumCardsSelected(numCardsSelected + 1)
-	}
-
   
     // JSX 
     return (
@@ -44,17 +39,17 @@ const Player = ({ player, round }) => {
 	                <Card
 	        			key={card}
 	        			card={card}
-	        			numCardsSelected={numCardsSelected}
-	        			decrementCardsSelected={decrementCardsSelected}
-	        			incrementCardsSelected={incrementCardsSelected}
+	        			cardsSelected={cardsSelected}
+	        			addCardToSelected={addCardToSelected}
+	        			removeCardFromSelected={removeCardFromSelected}
 	        		/>
             	))
             }
 
-            {numCardsSelected == 2 ?
+            {cardsSelected.length == 2 ?
 
             	<button
-            		onClick={handlePlayClick}
+            		onClick={() => handlePlayHandClick(cardsSelected)}
             	>
             		Play Hand
             	</button>
