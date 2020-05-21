@@ -4,6 +4,8 @@ import axios from 'axios'
 import cookie from 'js-cookie'
 import baseUrl from './../utils/baseUrl'
 
+import openSocket from 'socket.io-client';
+
 import { AuthContext } from "../App";
 import Player from './Player'
 
@@ -12,6 +14,10 @@ const Game = ({ location }) => {
 	const token = cookie.get('hh-token')
 
 	const [gameInfo, setGameInfo] = React.useState({})
+
+	function sendSocketIO() {
+	    socket.emit('example_message', 'demo');
+	}
 
 	React.useEffect(() => {
 
@@ -23,14 +29,21 @@ const Game = ({ location }) => {
 	            }
 	            const response = await axios.get(url, payload)
 	            setGameInfo(response.data.gameInfo)
+	            console.log(response.data.gameInfo)
 
 	        } catch(error) {
 	            console.error(error)
 	        }
 	    }
 
+	    const socket = openSocket('http://localhost:3000');
+	    socket.broadcast.emit('broadcast', 'hello friends!');
+
 	    getGameInfo()
-        
+
+	    return function cleanup() {
+	    	socket.disconnect()
+	    }
 
     }, [])
 
@@ -45,6 +58,7 @@ const Game = ({ location }) => {
         	}
         	const headers = { headers: { Authorization: token } }
         	const response = await axios.post(url, payload, headers)
+        	console.log(response.data)
 
     	} catch(error) {
             console.error(error)
@@ -56,6 +70,16 @@ const Game = ({ location }) => {
     <div className="wrap game">
         <h1>Game</h1>
         <strong>Round {gameInfo.round}</strong>
+
+        <div className="board">
+	        {gameInfo.round?
+		        gameInfo[`board${gameInfo.round}`].map((card) => (
+		        	<div className={`card C${card}`} key={card}></div>
+		    	))
+		    :
+		    	''
+		    }
+	    </div>
         
         {gameInfo.players?
         <>

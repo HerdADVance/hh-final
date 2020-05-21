@@ -33,41 +33,59 @@ export default async (req, res) => {
 		let opponentPlayer = false
 
 		game.players.forEach(function(player){
-			if(player.user == userId) userPlayer = player._id
-				else opponentPlayer = player._id
+			if(player.user == userId) userPlayer = player
+				else opponentPlayer = player
 		})
 
 		if( !userPlayer ) return res.status(401).send("Not authorized to play this game")
 
-		
-		// Validate that cards from user's played hand exist
+
+		// Validate that cards from user's played hand exist, then remove them from active cards
 		hand.forEach(function(card){
 			if(!userPlayer.cards.includes(card)) return res.status(401).send("User doesn't have these cards in their hand")
+			userPlayer.cards = userPlayer.cards.filter(item => item !== card)
 		})
 
 
-		// User's play is valid so see if opponent has played
+		console.log(userPlayer)
+
+		// Save player with hand removed from active cards and saved as hand for appropriate round
 		const round = game.round
+		await Player.findOneAndUpdate(
+			{ _id: userPlayer._id},
+			{ $set: { 
+				cards: userPlayer.cards,
+				[`hand${round}`]: hand
+			} }
+		)
+
+
+		// User's play is valid so see if opponent has played
 		const opponentHand = opponentPlayer[`hand${round}`]
 		
-		// If opponent has played, compare hands, update hand, score and round, return new board
+		// If opponent has played, compare hands, update game round and player scores, return new board
 		if( opponentHand.length === 2) {
 
-			//compareHands(hand, opponentHand, game[`board${round}`])
+			const comparedHands = [1,0] //compareHands(hand, opponentHand, game[`board${round}`])
 			const newRound = round + 1
 
+			// Update user player score
 			await Player.findOneAndUpdate(
-				{_id: userPlayer._id, }
+				{ _id: userPlayer._id},
+				{ $set: { score: userPlayer.score + comparedHands[0] } }
 			)
 
+			// Update opponent player score
 			await Player.findOneAndUpdate(
-				{_id: userPlayer._id, }
+				{ _id: opponentPlayer._id},
+				{ $set: { score: opponentPlayer.score + comparedHands[1] } }
 			)
 
-			await updatedGame = Game.findOneAndUpdate({
-				_id: gameId, "round": newRound,
-				new: true
-			})
+			const updatedGame = await Game.findOneAndUpdate(
+				{_id: gameId},
+				{ $set: { round: newRound } },
+				{"new": true}
+			)
 			.populate({ 
 				path: "players", 
 				model: Player,
@@ -77,19 +95,16 @@ export default async (req, res) => {
 				} 
 			})
 
+			console.log(updatedGame)
+
 			res.status(200).json({
 				opponentHasPlayed: true,
 				gameDetails: updatedGame
 			})
 		} 
 		
-		// Opponent hasn't played so update user's hand for this round and return waiting for opponent message
+		// Opponent hasn't played so return waiting for opponent message
 		else {
-				
-			await Player.findOneAndUpdate( 
-				{ _id: userPlayer._id}, 
-				{ $set: { `hand${round}`: hand } }
-			)
 
 			res.status(200).json({
 				opponentHasPlayed: false

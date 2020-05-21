@@ -12,7 +12,7 @@ const Player = ({ player, round, handlePlayHandClick }) => {
 	function createCards(n){
 	    var cards = [];
 	    for(var i =0; i < n; i++){
-	        cards.push(<img key={i} src="/images/back.png" width="80" />);
+	        cards.push(<div className="card" key={i}></div>);
 	    }
 	    return cards;
 	}
@@ -28,8 +28,24 @@ const Player = ({ player, round, handlePlayHandClick }) => {
   
     // JSX 
     return (
-    <div className="player">
-        <h1>{player.username} {player.score}</h1>
+    <div className={player.isUser? 'player me' : 'player'}>
+
+    	<div className="player-info">
+        	<span className="player-score">{player.score}</span>
+        	<span className="player-username">{player.username}</span>
+
+        	{player.isUser?
+	        	<button
+	        		className="player-play"
+	        		onClick={() => handlePlayHandClick(cardsSelected)}
+	        		disabled={cardsSelected.length === 2 ? false : true }
+	        	>
+	        		Play Hand
+	        	</button>
+	        :
+	        	<button className="player-play">Playing</button>
+	    	}
+        </div>
 
         {player.isUser?
         <>
@@ -44,18 +60,6 @@ const Player = ({ player, round, handlePlayHandClick }) => {
 	        			removeCardFromSelected={removeCardFromSelected}
 	        		/>
             	))
-            }
-
-            {cardsSelected.length == 2 ?
-
-            	<button
-            		onClick={() => handlePlayHandClick(cardsSelected)}
-            	>
-            		Play Hand
-            	</button>
-            :
-            	''
-
             }
 
         </>

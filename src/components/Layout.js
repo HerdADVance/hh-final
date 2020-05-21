@@ -15,7 +15,7 @@ const Layout = () => {
     return (
     <>
         <Header/>
-        <Router>
+        <Router className="main-wrap">
             <Signup path="/signup" />
             <Login path="/login" />
             <Dashboard path="/"/>

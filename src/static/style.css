@@ -1,3 +1,10 @@
+*{
+	box-sizing: border-box;
+}
+button{
+	cursor: pointer;
+	user-select: none;
+}
 
 .wrap{
 	padding-left: 10%;
@@ -50,16 +57,123 @@ nav li a{
 	width: 400px
 }
 
+
+.main-wrap{
+	height: calc(100vh - 40px);
+}
+
+
+/* ===== GAME ===== */
+.game{
+	align-items: center;
+	background: darkslateblue;
+	display: flex;
+	height: 100%;
+	justify-content: center;
+	position: relative;
+}
+
+.board{
+	position: absolute;
+}
+
+
+/* ===== PLAYER ===== */
+.player{
+	display: flex;
+	justify-content: center;
+	position: absolute;
+	top: 30px;
+	width: 70%;
+}
+
+.player.me{
+	bottom: 30px;
+	top: inherit;
+}
+
+.player-info{
+	background: rgba(0,0,0,1);
+	border: 3px solid #999;
+	color: white;
+	display: flex;
+	height: 50px;
+	position: absolute;
+	top: -20px;
+	width: 400px;
+	z-index: 2;
+}
+.me .player-info{
+	bottom: -20px;
+	top: initial;
+}
+
+.player-info span{
+	align-items: center;
+	display: flex;
+	justify-content: center;
+}
+
+.player-score{
+	background: white;
+	color: black;
+	font-size: 32px;
+	text-align: center;
+	width: 60px;
+}
+
+.player-username{
+	font-size: 16px;
+	width: calc(100% - 160px);
+}
+
+.player-play{
+	background: crimson;
+	border: none;
+	color: white;
+	cursor: initial;
+	width: 100px;
+}
+.player-play[disabled]{
+	cursor: initial;
+	opacity: 0.5;
+}
+.me .player-play{
+	background: mediumseagreen;
+	cursor: pointer;
+	transition: 0.25s background ease;
+}
+.me .player-play:hover{
+	background: forestgreen;
+}
+.me .player-play[disabled]:hover{
+	background: mediumseagreen;
+}
+
+
+/* ===== CARD ===== */
 .card{
+	background-image:url(../images/back.png);
 	background-repeat: no-repeat;
 	background-size: cover;
+	border-radius: 5px;
+	box-shadow: -1px -1px 8px #333;
 	float: left;
-	height: 120px;
-	width: 80px;
+	height: 117px;
+	margin-left: -15px;
+	width: 81px;
+}
+.me .card{
+	cursor: pointer;
+}
+.board .card{
+	margin-left: 0;
 }
 .card.selected{
 	margin-top: -10px;
 }
+
+
 
 .C1{background-image:url(../images/2C.png);}
 .C2{background-image:url(../images/3C.png);}

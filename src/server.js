@@ -23,6 +23,21 @@ app.use(json())
 app.use(urlencoded({ extended: true }))
 app.use(morgan('dev'))
 
+
+
+// const http = require('http').Server(app);
+// const io = require('socket.io')(http);
+// io.on('connection', function(socket){
+//   console.log('a user connected');
+//   socket.on('disconnect', function(){
+//     console.log('User Disconnected');
+//   });
+//   socket.on('example_message', function(msg){
+//     console.log('message: ' + msg);
+//   });
+// });
+// io.listen(server);
+
 app.post('/signup', signup)
 app.post('/login', login)
 app.get('/api/user', user)
@@ -39,9 +54,19 @@ app.post('/api/game/:id/playHand', playHand)
 export const start = async () => {
 	try {
 		await connect()
-		app.listen(config.port, () => {
+		const server = app.listen(config.port, () => {
 		  console.log(`REST API on http://localhost:${config.port}`)
 		})
+		const io = require('socket.io').listen(server)
+		io.on('connection', function(socket){
+		  console.log('a user connected');
+		  socket.on('disconnect', function(){
+		    console.log('User Disconnected');
+		  });
+		  socket.on('example_message', function(msg){
+		    console.log('message: ' + msg);
+		  });
+		});
 	} catch (e) {
 		console.error(e)
 	}
