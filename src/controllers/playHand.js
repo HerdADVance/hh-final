@@ -10,10 +10,14 @@ connect()
 
 export default async (req, res) => {
 	
+
 	console.log("play hand controller")
 
 	const { hand, gameId } = req.body
 	const { userId } = jwt.verify(req.headers.authorization, options.secrets.jwt)
+
+	req.io.emit(gameId, 'sending from controllerrrrrrr')
+	return res.status(200).send('done')
 	
 	if( !userId ) return res.status(401).send("Not authorized to play this game")
 

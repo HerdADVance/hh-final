@@ -6,6 +6,8 @@ import connect from '../utils/db'
 import options from '../config'
 import find from 'lodash/find'
 
+//import io from '../../index'
+
 connect()
 
 export default async (req, res) => {

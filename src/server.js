@@ -23,6 +23,11 @@ app.use(json())
 app.use(urlencoded({ extended: true }))
 app.use(morgan('dev'))
 
+// const io = start(true)
+// app.use(function(req, res, next){
+//   	req.io = io
+//   	next();
+// });
 
 
 // const http = require('http').Server(app);
@@ -38,6 +43,7 @@ app.use(morgan('dev'))
 // });
 // io.listen(server);
 
+
 app.post('/signup', signup)
 app.post('/login', login)
 app.get('/api/user', user)
@@ -51,23 +57,67 @@ app.post('/api/game/:id/playHand', playHand)
 // app.use('/api/item', itemRouter)
 // app.use('/api/list', listRouter)
 
-export const start = async () => {
+// try {
+// 	await connect()
+// 	const server = app.listen(config.port, () => {
+// 	  console.log(`REST API on http://localhost:${config.port}`)
+// 	})
+// 	const io = require('socket.io').listen(server)
+// 	io.on('connection', function(socket){
+// 	  console.log('a user connected');
+// 	  socket.on('disconnect', function(){
+// 	    console.log('User Disconnected');
+// 	  });
+// 	  socket.on('example_message', function(msg){
+// 	    console.log('message: ' + msg);
+// 	  });
+// 	});
+// } catch (e) {
+// 	console.error(e)
+// }
+
+export const start = async (started) => {
 	try {
-		await connect()
-		const server = app.listen(config.port, () => {
-		  console.log(`REST API on http://localhost:${config.port}`)
-		})
-		const io = require('socket.io').listen(server)
-		io.on('connection', function(socket){
-		  console.log('a user connected');
-		  socket.on('disconnect', function(){
-		    console.log('User Disconnected');
-		  });
-		  socket.on('example_message', function(msg){
-		    console.log('message: ' + msg);
-		  });
-		});
+
+		if(!started){
+		
+			await connect()
+			
+			const server = await app.listen(config.port, () => {
+			  console.log(`REST API on http://localhost:${config.port}`)
+			
+			})
+
+			const io = await require('socket.io').listen(server)
+
+		}
+
+
+		
+
+		// io.on('connection', function(socket){
+			
+		// 	socket.emit('thisgame', "sending from controller", "ct")
+		//   	console.log('a user connected');
+		  	
+		//   	socket.on('disconnect', function(){
+		//     	console.log('User Disconnected');
+		//   	});
+		  	
+		//   	socket.on('example_message', function(msg){
+		//     	console.log('message: ' + msg);
+		//   	});
+		// });
+
+
+		return io
+
 	} catch (e) {
 		console.error(e)
 	}
 }
+
+// export const startIo = async (server) => {
+// 	const io = require('socket.io').listen(server)
+
+

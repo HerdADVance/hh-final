@@ -12,6 +12,9 @@
   
   "runOnChangeOnly": false,
   "watch": [
+    "index.js",
+    "src/server.js",
+    "src/controllers/*",
     "server/**/*.js",
     "src/**/*.graphql",
     "src/**/*.gql"

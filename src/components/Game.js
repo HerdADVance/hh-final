@@ -36,8 +36,14 @@ const Game = ({ location }) => {
 	        }
 	    }
 
+	    const gameId = location.pathname.substr(6)
 	    const socket = openSocket('http://localhost:3000');
-	    socket.broadcast.emit('broadcast', 'hello friends!');
+	    socket.on(gameId, function(msg){
+	    	console.log(msg)
+	    })
+	    // socket.join('thisgame');
+	    // socket.to('thisgame').emit('nice game', "let's play a game");
+
 
 	    getGameInfo()
 
