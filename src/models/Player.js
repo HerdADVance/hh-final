@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-const { Number, ObjectId } = mongoose.Schema.Types
+const { Number, Boolean, ObjectId } = mongoose.Schema.Types
 
 const playerSchema = new mongoose.Schema({
 	user: {
@@ -51,6 +51,10 @@ const playerSchema = new mongoose.Schema({
 	score: {
 		type: Number,
 		default: 0
+	},
+	hasPlayed: {
+		type: Boolean,
+		default: false
 	}
 
 })

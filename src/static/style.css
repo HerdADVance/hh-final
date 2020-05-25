@@ -1,3 +1,8 @@
+.console{
+	left: 0;
+	position: absolute;
+	top: 250px;
+}
 *{
 	box-sizing: border-box;
 }
@@ -136,6 +141,9 @@ nav li a{
 }
 .player-play[disabled]{
 	cursor: initial;
+	opacity: 0.5;
+}
+.player-play-playing{
 	opacity: 0.5;
 }
 .me .player-play{

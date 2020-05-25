@@ -43,7 +43,13 @@ const Player = ({ player, round, handlePlayHandClick }) => {
 	        		Play Hand
 	        	</button>
 	        :
-	        	<button className="player-play">Playing</button>
+
+	        	player.hasPlayed?
+	        		<button className="player-play player-play-ready">Ready</button>
+	        	:
+	        		<button className="player-play player-play-playing">Playing</button>
+	        	
+	        	
 	    	}
         </div>
 

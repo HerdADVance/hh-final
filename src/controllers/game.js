@@ -45,7 +45,7 @@ export default async (req, res) => {
 			board4: false,
 			board5: false,
 			round: game.round,
-			players: [],
+			playerIds: [],
 		}
 
 		// Return only current or previous boards
@@ -55,7 +55,9 @@ export default async (req, res) => {
 
 		// Return info about each player 
 		game.players.forEach(function(player){
+			
 			let playerInfo = {
+				id: player._id,
 				userid: player.user._id,
 				username: player.user.username,
 				isUser: false,
@@ -65,7 +67,9 @@ export default async (req, res) => {
 				hand3: false,
 				hand4: false,
 				hand5: false,
-				score: player.score
+				score: player.score,
+				hasPlayed: player.hasPlayed,
+				handToDisplay: false
 			}
 
 			// Return only previous hands
@@ -80,8 +84,11 @@ export default async (req, res) => {
 				playerInfo.cards = player.cards
 			}
 
-			gameInfo.players.push(playerInfo)
+			gameInfo[player._id] = playerInfo
+			gameInfo.playerIds.push(player._id)
 		})
+
+		console.log(gameInfo)
 
 
 		// Send game data

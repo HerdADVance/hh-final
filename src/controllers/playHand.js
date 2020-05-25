@@ -15,9 +15,7 @@ export default async (req, res) => {
 
 	const { hand, gameId } = req.body
 	const { userId } = jwt.verify(req.headers.authorization, options.secrets.jwt)
-
-	req.io.emit(gameId, 'sending from controllerrrrrrr')
-	return res.status(200).send('done')
+	let playHandClickInfo = {}
 	
 	if( !userId ) return res.status(401).send("Not authorized to play this game")
 
@@ -51,38 +49,40 @@ export default async (req, res) => {
 		})
 
 
-		console.log(userPlayer)
-
-		// Save player with hand removed from active cards and saved as hand for appropriate round
+		// Save player with hand removed from active cards and saved as hand for appropriate round, and mark hasPlayed true
 		const round = game.round
 		await Player.findOneAndUpdate(
 			{ _id: userPlayer._id},
 			{ $set: { 
 				cards: userPlayer.cards,
-				[`hand${round}`]: hand
-			} }
+				[`hand${round}`]: hand,
+				hasPlayed: true
+			} },
+			{"new": true}
 		)
 
 
 		// User's play is valid so see if opponent has played
-		const opponentHand = opponentPlayer[`hand${round}`]
+		//const opponentHand = opponentPlayer[`hand${round}`]
 		
 		// If opponent has played, compare hands, update game round and player scores, return new board
-		if( opponentHand.length === 2) {
+		if( opponentPlayer.hasPlayed ) {
 
 			const comparedHands = [1,0] //compareHands(hand, opponentHand, game[`board${round}`])
 			const newRound = round + 1
 
 			// Update user player score
-			await Player.findOneAndUpdate(
+			const newUserPlayer = await Player.findOneAndUpdate(
 				{ _id: userPlayer._id},
-				{ $set: { score: userPlayer.score + comparedHands[0] } }
+				{ $set: { score: userPlayer.score + comparedHands[0] } },
+				{"new": true}
 			)
 
 			// Update opponent player score
-			await Player.findOneAndUpdate(
+			const newOpponentPlayer = await Player.findOneAndUpdate(
 				{ _id: opponentPlayer._id},
-				{ $set: { score: opponentPlayer.score + comparedHands[1] } }
+				{ $set: { score: opponentPlayer.score + comparedHands[1] } },
+				{"new": true}
 			)
 
 			const updatedGame = await Game.findOneAndUpdate(
@@ -101,19 +101,36 @@ export default async (req, res) => {
 
 			console.log(updatedGame)
 
-			res.status(200).json({
-				opponentHasPlayed: true,
-				gameDetails: updatedGame
-			})
+			playHandClickInfo = {
+				type: 'play_hand',
+				newRound: true,
+				round: newRound,
+				newBoard: game[`board${newRound}`]
+			}
+			playHandClickInfo[userPlayer._id] = {
+				score: newUserPlayer.score,
+				handToDisplay: newUserPlayer[`hand${round}`]
+			}
+			playHandClickInfo[opponentPlayer._id] = {
+				score: newOpponentPlayer.score,
+				handToDisplay: newOpponentPlayer[`hand${round}`]
+			}
+
 		} 
 		
-		// Opponent hasn't played so return waiting for opponent message
-		else {
+		// Opponent hasn't played so we only need to return id of player who played
+		else {	
 
-			res.status(200).json({
-				opponentHasPlayed: false
-			})
+			playHandClickInfo = {
+				type: 'play_hand',
+				newRound: false,
+				playedPlayerId: userPlayer._id
+			}
+
 		}
+
+		req.io.emit(gameId, playHandClickInfo)
+		res.status(200).send("sent")
 
 
 
